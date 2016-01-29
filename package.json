@@ -1,0 +1,32 @@
+{
+  "name": "articulate",
+  "version": "1.0.0",
+  "description": "a way to articulate your thoughts for when it's difficult",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/goggledefogger/articulate.git"
+  },
+  "keywords": [
+    "articulate",
+    "accessibility"
+  ],
+  "author": "Danny Bauman",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/goggledefogger/articulate/issues"
+  },
+  "homepage": "https://github.com/goggledefogger/articulate",
+  "dependencies": {
+    "app-server": "jessetane/app-server#3.0.1",
+    "build-css": "jessetane/build-css#2.0.0",
+    "build-js": "jessetane/build-js#2.0.0",
+    "chalk": "1.1.1",
+    "document-register-element": "0.5.4",
+    "fastclick": "^1.0.6",
+    "uri-router": "^2.0.1"
+  }
+}

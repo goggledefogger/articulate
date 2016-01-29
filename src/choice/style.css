@@ -1,0 +1,34 @@
+#choices {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+}
+
+#choices .row {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  height: 50%;
+}
+
+#choices .choice {
+  width: 50%;
+  height: 100%;
+}
+
+#choices #choice-1 {
+  background-color: red;
+}
+
+#choices #choice-2 {
+  background-color: yellow;
+}
+
+#choices #choice-3 {
+  background-color: green;
+}
+
+#choices #choice-4 {
+  background-color: blue;
+}

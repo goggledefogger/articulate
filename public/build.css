@@ -1,0 +1,48 @@
+#choices {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  width: 100%;
+  height: 100%;
+}
+
+#choices .row {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: row;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  width: 100%;
+  height: 50%;
+}
+
+#choices .choice {
+  width: 50%;
+  height: 100%;
+}
+
+#choices #choice-1 {
+  background-color: red;
+}
+
+#choices #choice-2 {
+  background-color: yellow;
+}
+
+#choices #choice-3 {
+  background-color: green;
+}
+
+#choices #choice-4 {
+  background-color: blue;
+}
