@@ -2771,8 +2771,8 @@ ChoicesView.prototype.render = function () {
     '#choice-2 .choice-text': {_text: this.model.data['2'].text},
     '#choice-3 .choice-text': {_text: this.model.data['3'].text},
     '#choice-4 .choice-text': {_text: this.model.data['4'].text},
-    '#back': {_class: {disabled: this.model.id === '1' && !this._editing}},
-    '#edit': {_class: {disabled: this.model.id === '1' && this._editing}},
+    '#back': {_class: {disabled: this.model.id === '1' || this._editing}},
+    '#edit': {_text: this._editing ? 'DONE' : 'EDIT'},
     '.choice': {_class: {
       disabled: this._editing,
       editing: this._editing
@@ -2780,8 +2780,8 @@ ChoicesView.prototype.render = function () {
   })
 }
 
-ChoicesView.prototype._toggleEditMode = function (editing) {
-  this._editing = editing
+ChoicesView.prototype._toggleEditMode = function () {
+  this._editing = !this._editing
   this.render()
 }
 
@@ -2799,18 +2799,21 @@ ChoicesView.prototype._onclick = function (evt) {
   } else if (evt.target.classList.contains('choice-4')) {
     choiceId = '4'
   } else if (evt.target.classList.contains('back')) {
-    if (this._editing) {
-      this._toggleEditMode(false)
+    if (!this._editing) {
+      nextChoicesId = this._previousChoice
     }
-    nextChoicesId = this._previousChoice
   } else if (evt.target.classList.contains('edit')) {
-    this._toggleEditMode(true)
+    this._toggleEditMode()
   }
 
   if (choiceId) {
-    nextChoicesId = this.model.data[choiceId].next_choices
-    if (nextChoicesId) {
-      this._previousChoice = this.model.id
+    if (this._editing) {
+      this._editChoice(choiceId)
+    } else {
+      nextChoicesId = this.model.data[choiceId].next_choices
+      if (nextChoicesId) {
+        this._previousChoice = this.model.id
+      }
     }
   }
 
@@ -2826,6 +2829,14 @@ ChoicesView.prototype._onclick = function (evt) {
       })
     }, TIME_TO_TRANSITION)
     this.show(nextChoicesId)
+  }
+}
+
+ChoicesView.prototype._editChoice = function (choiceId) {
+  var newChoice = window.prompt('What should it be?')
+  if (newChoice) {
+    this.model.data[choiceId].text = newChoice
+    this.model.update(this.render)
   }
 }
 
