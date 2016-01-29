@@ -3,9 +3,9 @@ require('document-register-element')
 require('fastclick')(document.body)
 
 // custom elements
-var Choice = require('./src/choice')
-var firstChoice = new Choice()
-document.querySelector('#page-outlet').appendChild(firstChoice)
+var ChoicesView = require('./src/choices')
+var firstChoices = new ChoicesView()
+document.querySelector('#page-outlet').appendChild(firstChoices)
 
 var router = require('uri-router')
 
@@ -14,6 +14,6 @@ router({
   watch: 'pathname',
   outlet: '#page-outlet',
   routes: {
-    '/': firstChoice.show()
+    '/': firstChoices.show()
   }
 })

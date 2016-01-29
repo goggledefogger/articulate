@@ -4,9 +4,9 @@ require('document-register-element')
 require('fastclick')(document.body)
 
 // custom elements
-var Choice = require('./src/choice')
-var firstChoice = new Choice()
-document.querySelector('#page-outlet').appendChild(firstChoice)
+var ChoicesView = require('./src/choices')
+var firstChoices = new ChoicesView()
+document.querySelector('#page-outlet').appendChild(firstChoices)
 
 var router = require('uri-router')
 
@@ -15,11 +15,11 @@ router({
   watch: 'pathname',
   outlet: '#page-outlet',
   routes: {
-    '/': firstChoice.show()
+    '/': firstChoices.show()
   }
 })
 
-},{"./src/choice":12,"document-register-element":5,"fastclick":6,"uri-router":7}],2:[function(require,module,exports){
+},{"./src/choices":12,"document-register-element":5,"fastclick":6,"uri-router":7}],2:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -1399,22 +1399,36 @@ function URI (uri) {
 },{"querystring":4}],11:[function(require,module,exports){
 module.exports = "<div id=\"choices\">\r\n  <div class=\"row\">\r\n    <div id=\"choice-1\" class=\"choice\">\r\n      <div class=\"choice-text\">Choice 1</div>\r\n    </div>\r\n    <div id=\"choice-2\" class=\"choice\">\r\n      <div class=\"choice-text\">Choice 2</div>\r\n    </div>\r\n  </div>\r\n  <div class=\"row\">\r\n    <div id=\"choice-3\" class=\"choice\">\r\n      <div class=\"choice-text\">Choice 3</div>\r\n    </div>\r\n    <div id=\"choice-4\" class=\"choice\">\r\n      <div class=\"choice-text\">Choice 4</div>\r\n    </div>\r\n  </div>\r\n</div>";
 },{}],12:[function(require,module,exports){
-var Choice = {
+var ChoicesView = {
   prototype: Object.create(HTMLElement.prototype)
 }
 
-Choice.prototype.createdCallback = function () {
+var ChoicesModel = require('./model')
+
+ChoicesView.prototype.createdCallback = function () {
   this.innerHTML = require('./index.html')
 
+  this.render = this.render.bind(this)
   this._onclick = this._onclick.bind(this)
+
   this.addEventListener('click', this._onclick)
 }
 
-Choice.prototype.show = function () {
+ChoicesView.prototype.show = function () {
+  this.model = new ChoicesModel()
+  this.model.on('update', this.render)
+  this.model.watch()
+}
+
+ChoicesView.prototype.render = function () {
+  if (!this.model) {
+    return
+  }
+
 
 }
 
-Choice.prototype._onclick = function (evt) {
+ChoicesView.prototype._onclick = function (evt) {
   switch (evt.target.id) {
     case 'choice-1':
       break
@@ -1427,10 +1441,17 @@ Choice.prototype._onclick = function (evt) {
   }
 }
 
-Choice.prototype.hide = function () {
+ChoicesView.prototype.hide = function () {
 
 }
 
-module.exports = document.registerElement('x-choice', Choice)
+module.exports = document.registerElement('x-choice', ChoicesView)
 
-},{"./index.html":11}]},{},[1]);
+},{"./index.html":11,"./model":13}],13:[function(require,module,exports){
+module.exports = Choices
+
+function Choices () {
+
+}
+
+},{}]},{},[1]);
