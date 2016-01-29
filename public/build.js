@@ -2741,6 +2741,8 @@ ChoicesView.prototype.createdCallback = function () {
   this._onclick = this._onclick.bind(this)
 
   this.addEventListener('click', this._onclick)
+
+  this._history = []
 }
 
 ChoicesView.prototype.show = function (id) {
@@ -2753,6 +2755,8 @@ ChoicesView.prototype.show = function (id) {
   if (!id) {
     id = 1
   }
+
+  this._history.push(id)
 
   if (!this.model) {
     this.model = new ChoicesModel({id: id})
@@ -2826,7 +2830,9 @@ ChoicesView.prototype._onclick = function (evt) {
     choiceId = '4'
   } else if (evt.target.classList.contains('back')) {
     if (!this._editing) {
-      nextChoicesId = this._previousChoice
+      this._history.pop()
+      nextChoicesId = this._history[this._history.length - 1]
+      this._history.pop()
     }
   } else if (evt.target.classList.contains('edit')) {
     this._toggleEditMode()

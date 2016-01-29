@@ -40,7 +40,7 @@
 }
 
 #choices .no-more-choices {
-  opacity: 0.4;
+  border: 5px dashed black;
 }
 
 #choices #choices-container {
