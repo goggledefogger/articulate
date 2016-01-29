@@ -1,20 +1,21 @@
 #choices {
   display: flex;
   flex-direction: column;
-  width: 100%;
   height: 100%;
 }
 
 #choices .row {
   display: flex;
   flex-direction: row;
-  width: 100%;
-  height: 50%;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  flex: 1 0 0;
 }
 
 #choices .choice {
-  width: 50%;
-  height: 100%;
+  flex: 1 0 0;
+  margin-left: 10px;
+  margin-right: 10px;
 }
 
 #choices #choice-1 {
