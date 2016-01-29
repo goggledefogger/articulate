@@ -25,12 +25,14 @@
   flex: 4 0 0;
   background-color: #999966;
   width: 100%;
+  font-size: 32px;
 }
 
 #choices #edit {
   flex: 1 0 0;
   background-color: #899966;
   width: 100%;
+  font-size: 22px;
 }
 
 #choices .disabled {
@@ -83,7 +85,7 @@
 }
 
 #choices .choice-text {
-  font-size: 36px;
+  font-size: 42px;
   text-align: center;
   text-transform: uppercase;
 }
