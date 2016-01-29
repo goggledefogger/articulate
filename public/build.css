@@ -74,6 +74,10 @@
   opacity: 0.4;
 }
 
+#choices .no-more-choices {
+  opacity: 0.4;
+}
+
 #choices #choices-container {
   display: -webkit-box;
   display: -webkit-flex;
