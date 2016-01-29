@@ -9,6 +9,10 @@ var db = new Firebase('articulate-dev.firebaseio.com')
 inherits(Choices, RealtimeModel)
 
 function Choices (data) {
-  var storage = db.child('choices/1')
+  var choiceId = 1
+  if (data && data.id) {
+    choiceId = data.id
+  }
+  var storage = db.child('choices').child(choiceId)
   RealtimeModel.call(this, storage, data)
 }
