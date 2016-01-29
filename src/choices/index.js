@@ -5,6 +5,8 @@ var ChoicesView = {
 var hg = require('hyperglue2')
 var ChoicesModel = require('./model')
 
+var TIME_TO_TRANSITION = 2000
+
 ChoicesView.prototype.createdCallback = function () {
   this.innerHTML = require('./index.html')
 
@@ -42,11 +44,13 @@ ChoicesView.prototype.render = function () {
     '#choice-2 .choice-text': {_text: this.model.data['2'].text},
     '#choice-3 .choice-text': {_text: this.model.data['3'].text},
     '#choice-4 .choice-text': {_text: this.model.data['4'].text},
-    '#back': {_class: {disabled: this.model.id === '1'}}
+    '#back': {_class: {disabled: this.model.id === '1'}},
+    '#edit': {_class: {hidden: this.model.id === '1'}}
   })
 }
 
 ChoicesView.prototype._onclick = function (evt) {
+  var self = this
   var choiceId = null
   var nextChoicesId = null
 
@@ -70,6 +74,16 @@ ChoicesView.prototype._onclick = function (evt) {
   }
 
   if (nextChoicesId) {
+    hg(this, {
+      '#choices-container': {_class: {transitioning: true}},
+      '.choice-text': {_class: {hidden: true}}
+    })
+    setTimeout(function () {
+      hg(self, {
+        '#choices-container': {_class: {transitioning: false}},
+        '.choice-text': {_class: {hidden: false}}
+      })
+    }, TIME_TO_TRANSITION)
     this.show(nextChoicesId)
   }
 }
