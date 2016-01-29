@@ -41,29 +41,35 @@ ChoicesView.prototype.render = function () {
     '#choice-1 .choice-text': {_text: this.model.data['1'].text},
     '#choice-2 .choice-text': {_text: this.model.data['2'].text},
     '#choice-3 .choice-text': {_text: this.model.data['3'].text},
-    '#choice-4 .choice-text': {_text: this.model.data['4'].text}
+    '#choice-4 .choice-text': {_text: this.model.data['4'].text},
+    '#back': {_class: {disabled: this.model.id === '1'}}
   })
 }
 
 ChoicesView.prototype._onclick = function (evt) {
   var choiceId = null
-  switch (evt.target.id) {
-    case 'choice-1':
-      choiceId = '1'
-      break
-    case 'choice-2':
-      choiceId = '2'
-      break
-    case 'choice-3':
-      choiceId = '3'
-      break
-    case 'choice-4':
-      choiceId = '4'
-      break
+  var nextChoicesId = null
+
+  if (evt.target.classList.contains('choice-1')) {
+    choiceId = '1'
+  } else if (evt.target.classList.contains('choice-2')) {
+    choiceId = '2'
+  } else if (evt.target.classList.contains('choice-3')) {
+    choiceId = '3'
+  } else if (evt.target.classList.contains('choice-4')) {
+    choiceId = '4'
+  } else if (evt.target.classList.contains('back')) {
+    nextChoicesId = this._previousChoice
   }
 
   if (choiceId) {
-    var nextChoicesId = this.model.data[choiceId].next_choices
+    nextChoicesId = this.model.data[choiceId].next_choices
+    if (nextChoicesId) {
+      this._previousChoice = this.model.id
+    }
+  }
+
+  if (nextChoicesId) {
     this.show(nextChoicesId)
   }
 }

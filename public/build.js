@@ -2723,7 +2723,7 @@ function URI (uri) {
 }
 
 },{"querystring":5}],19:[function(require,module,exports){
-module.exports = "<div id=\"choices\">\r\n  <div class=\"row\">\r\n    <div id=\"choice-1\" class=\"choice\">\r\n      <div class=\"choice-text\">Choice 1</div>\r\n    </div>\r\n    <div id=\"choice-2\" class=\"choice\">\r\n      <div class=\"choice-text\">Choice 2</div>\r\n    </div>\r\n  </div>\r\n  <div class=\"row\">\r\n    <div id=\"choice-3\" class=\"choice\">\r\n      <div class=\"choice-text\">Choice 3</div>\r\n    </div>\r\n    <div id=\"choice-4\" class=\"choice\">\r\n      <div class=\"choice-text\">Choice 4</div>\r\n    </div>\r\n  </div>\r\n</div>";
+module.exports = "<div id=\"choices\">\r\n  <div id=\"back\" class=\"back button disabled\">\r\n    <div class=\"back-text back\">Back</div>\r\n  </div>\r\n  <div id=\"choices-container\">\r\n    <div class=\"row\">\r\n      <div id=\"choice-1\" class=\"choice choice-1 button\">\r\n        <div class=\"choice-text choice-1\">Choice 1</div>\r\n      </div>\r\n      <div id=\"choice-2\" class=\"choice choice-2 button\">\r\n        <div class=\"choice-text choice-2\">Choice 2</div>\r\n      </div>\r\n    </div>\r\n    <div class=\"row\">\r\n      <div id=\"choice-3\" class=\"choice choice-3 button\">\r\n        <div class=\"choice-text choice-3\">Choice 3</div>\r\n      </div>\r\n      <div id=\"choice-4\" class=\"choice choice-4 button\">\r\n        <div class=\"choice-text choice-4\">Choice 4</div>\r\n      </div>\r\n    </div>\r\n  </div>\r\n</div>";
 },{}],20:[function(require,module,exports){
 var ChoicesView = {
   prototype: Object.create(HTMLElement.prototype)
@@ -2768,29 +2768,35 @@ ChoicesView.prototype.render = function () {
     '#choice-1 .choice-text': {_text: this.model.data['1'].text},
     '#choice-2 .choice-text': {_text: this.model.data['2'].text},
     '#choice-3 .choice-text': {_text: this.model.data['3'].text},
-    '#choice-4 .choice-text': {_text: this.model.data['4'].text}
+    '#choice-4 .choice-text': {_text: this.model.data['4'].text},
+    '#back': {_class: {disabled: this.model.id === '1'}}
   })
 }
 
 ChoicesView.prototype._onclick = function (evt) {
   var choiceId = null
-  switch (evt.target.id) {
-    case 'choice-1':
-      choiceId = '1'
-      break
-    case 'choice-2':
-      choiceId = '2'
-      break
-    case 'choice-3':
-      choiceId = '3'
-      break
-    case 'choice-4':
-      choiceId = '4'
-      break
+  var nextChoicesId = null
+
+  if (evt.target.classList.contains('choice-1')) {
+    choiceId = '1'
+  } else if (evt.target.classList.contains('choice-2')) {
+    choiceId = '2'
+  } else if (evt.target.classList.contains('choice-3')) {
+    choiceId = '3'
+  } else if (evt.target.classList.contains('choice-4')) {
+    choiceId = '4'
+  } else if (evt.target.classList.contains('back')) {
+    nextChoicesId = this._previousChoice
   }
 
   if (choiceId) {
-    var nextChoicesId = this.model.data[choiceId].next_choices
+    nextChoicesId = this.model.data[choiceId].next_choices
+    if (nextChoicesId) {
+      this._previousChoice = this.model.id
+    }
+  }
+
+  if (nextChoicesId) {
     this.show(nextChoicesId)
   }
 }
