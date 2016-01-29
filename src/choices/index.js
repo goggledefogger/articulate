@@ -2,6 +2,7 @@ var ChoicesView = {
   prototype: Object.create(HTMLElement.prototype)
 }
 
+var hg = require('hyperglue2')
 var ChoicesModel = require('./model')
 
 ChoicesView.prototype.createdCallback = function () {
@@ -24,7 +25,12 @@ ChoicesView.prototype.render = function () {
     return
   }
 
-
+  hg(this, {
+    '#choice-1 .choice-text': {_text: this.model.data['1'].text},
+    '#choice-2 .choice-text': {_text: this.model.data['2'].text},
+    '#choice-3 .choice-text': {_text: this.model.data['3'].text},
+    '#choice-4 .choice-text': {_text: this.model.data['4'].text},
+  })
 }
 
 ChoicesView.prototype._onclick = function (evt) {
