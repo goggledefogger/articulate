@@ -44,9 +44,18 @@ ChoicesView.prototype.render = function () {
     '#choice-2 .choice-text': {_text: this.model.data['2'].text},
     '#choice-3 .choice-text': {_text: this.model.data['3'].text},
     '#choice-4 .choice-text': {_text: this.model.data['4'].text},
-    '#back': {_class: {disabled: this.model.id === '1'}},
-    '#edit': {_class: {hidden: this.model.id === '1'}}
+    '#back': {_class: {disabled: this.model.id === '1' && !this._editing}},
+    '#edit': {_class: {disabled: this.model.id === '1' && this._editing}},
+    '.choice': {_class: {
+      disabled: this._editing,
+      editing: this._editing
+    }}
   })
+}
+
+ChoicesView.prototype._toggleEditMode = function (editing) {
+  this._editing = editing
+  this.render()
 }
 
 ChoicesView.prototype._onclick = function (evt) {
@@ -63,7 +72,12 @@ ChoicesView.prototype._onclick = function (evt) {
   } else if (evt.target.classList.contains('choice-4')) {
     choiceId = '4'
   } else if (evt.target.classList.contains('back')) {
+    if (this._editing) {
+      this._toggleEditMode(false)
+    }
     nextChoicesId = this._previousChoice
+  } else if (evt.target.classList.contains('edit')) {
+    this._toggleEditMode(true)
   }
 
   if (choiceId) {

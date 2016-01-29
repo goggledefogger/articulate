@@ -126,6 +126,10 @@
           justify-content: center;
 }
 
+#choices .choice.editing:hover {
+  opacity: 1;
+}
+
 #choices #choice-1 {
   background-color: #3399ff;
 }
