@@ -1397,7 +1397,7 @@ function URI (uri) {
 }
 
 },{"querystring":4}],11:[function(require,module,exports){
-module.exports = "<div id=\"choices\">\r\n  <div class=\"row\">\r\n    <div id=\"choice-1\" class=\"choice\"></div>\r\n    <div id=\"choice-2\" class=\"choice\"></div>\r\n  </div>\r\n  <div class=\"row\">\r\n    <div id=\"choice-3\" class=\"choice\"></div>\r\n    <div id=\"choice-4\" class=\"choice\"></div>\r\n  </div>\r\n</div>";
+module.exports = "<div id=\"choices\">\r\n  <div class=\"row\">\r\n    <div id=\"choice-1\" class=\"choice\">\r\n      <div class=\"choice-text\">Choice 1</div>\r\n    </div>\r\n    <div id=\"choice-2\" class=\"choice\">\r\n      <div class=\"choice-text\">Choice 2</div>\r\n    </div>\r\n  </div>\r\n  <div class=\"row\">\r\n    <div id=\"choice-3\" class=\"choice\">\r\n      <div class=\"choice-text\">Choice 3</div>\r\n    </div>\r\n    <div id=\"choice-4\" class=\"choice\">\r\n      <div class=\"choice-text\">Choice 4</div>\r\n    </div>\r\n  </div>\r\n</div>";
 },{}],12:[function(require,module,exports){
 var Choice = {
   prototype: Object.create(HTMLElement.prototype)
@@ -1405,10 +1405,26 @@ var Choice = {
 
 Choice.prototype.createdCallback = function () {
   this.innerHTML = require('./index.html')
+
+  this._onclick = this._onclick.bind(this)
+  this.addEventListener('click', this._onclick)
 }
 
 Choice.prototype.show = function () {
 
+}
+
+Choice.prototype._onclick = function (evt) {
+  switch (evt.target.id) {
+    case 'choice-1':
+      break
+    case 'choice-2':
+      break
+    case 'choice-3':
+      break
+    case 'choice-4':
+      break
+  }
 }
 
 Choice.prototype.hide = function () {

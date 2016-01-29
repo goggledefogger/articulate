@@ -36,20 +36,40 @@
           flex: 1 0 0;
   margin-left: 10px;
   margin-right: 10px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+      -ms-flex-pack: center;
+          justify-content: center;
 }
 
 #choices #choice-1 {
-  background-color: red;
+  background-color: #ff3333;
 }
 
 #choices #choice-2 {
-  background-color: yellow;
+  background-color: #ffcc33;
 }
 
 #choices #choice-3 {
-  background-color: green;
+  background-color: #33ff33;
 }
 
 #choices #choice-4 {
-  background-color: blue;
+  background-color: #3399ff;
+}
+
+#choices .choice-text {
+  font-size: 36px;
+  text-align: center;
+}
+body {
+  font-family: "Arial Black", Gadget, sans-serif;
 }
