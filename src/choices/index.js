@@ -108,6 +108,8 @@ ChoicesView.prototype._onclick = function (evt) {
   } else if (evt.target.classList.contains('choice-4')) {
     choiceId = '4'
   } else if (evt.target.classList.contains('back')) {
+    if (this._history.length <= 1) return
+
     if (!this._editing) {
       goingBack = true
       this._history.pop()
@@ -182,7 +184,7 @@ ChoicesView.prototype._transitionToNextChoices = function (choicesId) {
 }
 
 ChoicesView.prototype._editChoice = function (choiceId) {
-  var newChoice = window.prompt('What should it be?')
+  var newChoice = window.prompt('What should the new choice be?')
   if (newChoice) {
     this.model.data[choiceId].text = newChoice
     this.model.data[choiceId].blank = null
