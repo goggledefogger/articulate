@@ -29,7 +29,7 @@ ChoicesView.prototype.show = function (id) {
     id = 1
   }
 
-  this._history.push(id)
+  this._history.push({id: id})
 
   if (!this.model) {
     this.model = new ChoicesModel({id: id})
@@ -42,6 +42,8 @@ ChoicesView.prototype.render = function () {
   if (!this.model) {
     return
   }
+
+  var previousChoice = this._history.length > 1 ? this._history[this._history.length - 2].text : null
 
   hg(this, {
     '#choice-1': {
@@ -73,6 +75,7 @@ ChoicesView.prototype.render = function () {
     },
     '#choice-4 .choice-text': {_text: this.model.data['4'].text},
     '#back': {_class: {disabled: this.model.id === '1' || this._editing}},
+    '#previous-choice': {_text: previousChoice},
     '#edit': {_text: this._editing ? 'DONE' : 'EDIT'},
     '.choice': {
       _class: {
@@ -89,9 +92,12 @@ ChoicesView.prototype._toggleEditMode = function () {
 }
 
 ChoicesView.prototype._onclick = function (evt) {
+  if (!this.model || !this.model.loaded) return
+
   var self = this
   var choiceId = null
   var nextChoicesId = null
+  var goingBack = false
 
   if (evt.target.classList.contains('choice-1')) {
     choiceId = '1'
@@ -103,8 +109,9 @@ ChoicesView.prototype._onclick = function (evt) {
     choiceId = '4'
   } else if (evt.target.classList.contains('back')) {
     if (!this._editing) {
+      goingBack = true
       this._history.pop()
-      nextChoicesId = this._history[this._history.length - 1]
+      nextChoicesId = this._history[this._history.length - 1].id
       this._history.pop()
     }
   } else if (evt.target.classList.contains('edit')) {
@@ -119,7 +126,6 @@ ChoicesView.prototype._onclick = function (evt) {
       this._editChoice(choiceId)
     } else {
       nextChoicesId = this.model.data[choiceId].next_choices
-      this._previousChoice = this.model.id
       if (nextChoicesId) {
       } else {
         var newChoices = new ChoicesModel()
@@ -150,6 +156,9 @@ ChoicesView.prototype._onclick = function (evt) {
   }
 
   if (nextChoicesId) {
+    if (!goingBack) {
+      this._history[this._history.length - 1].text = this.model.data[choiceId].text
+    }
     this._transitionToNextChoices(nextChoicesId)
   }
 }
@@ -159,12 +168,14 @@ ChoicesView.prototype._transitionToNextChoices = function (choicesId) {
 
   hg(this, {
     '#choices-container': {_class: {transitioning: true}},
-    '.choice-text': {_class: {hidden: true}}
+    '.choice-text': {_class: {hidden: true}},
+    '#previous-choice': {_class: {hidden: true}}
   })
   setTimeout(function () {
     hg(self, {
       '#choices-container': {_class: {transitioning: false}},
-      '.choice-text': {_class: {hidden: false}}
+      '.choice-text': {_class: {hidden: false}},
+      '#previous-choice': {_class: {hidden: false}}
     })
   }, TIME_TO_TRANSITION)
   this.show(choicesId)

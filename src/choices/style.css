@@ -18,8 +18,13 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 20px;
+  margin-bottom: 80px;
 }
+
+#choices #left-column > div:last-of-type {
+  margin-bottom: 0;
+}
+
 
 #choices #back {
   flex: 4 0 0;
@@ -27,6 +32,18 @@
   width: 100%;
   font-size: 32px;
   transition: opacity 2s ease-in-out;
+}
+
+#choices #center-container {
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#choices #previous-choice {
+  text-transform: uppercase;
+  font-size: 32px;
 }
 
 #choices #edit {
@@ -38,10 +55,11 @@
 
 #choices .disabled {
   opacity: 0.4;
+  cursor: inherit;
 }
 
 #choices .choice.no-more-choices {
-  border: none;
+  border-color: white;
 }
 
 #choices #choices-container {
@@ -55,15 +73,15 @@
 #choices .row {
   display: flex;
   flex-direction: row;
-  margin-top: 30px;
-  margin-bottom: 30px;
+  margin-top: 10px;
+  margin-bottom: 10px;
   flex: 1 0 0;
 }
 
 #choices .choice {
   flex: 1 0 0;
-  margin-left: 30px;
-  margin-right: 30px;
+  margin-left: 40px;
+  margin-right: 40px;
   display: flex;
   align-items: center;
   justify-content: center;
