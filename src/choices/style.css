@@ -26,6 +26,7 @@
   background-color: #999966;
   width: 100%;
   font-size: 32px;
+  transition: opacity 2s ease-in-out;
 }
 
 #choices #edit {
@@ -39,8 +40,8 @@
   opacity: 0.4;
 }
 
-#choices .no-more-choices {
-  border: 5px dashed black;
+#choices .choice.no-more-choices {
+  border: none;
 }
 
 #choices #choices-container {
@@ -66,6 +67,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  border: 3px solid black;
 }
 
 #choices .choice.editing:hover {
