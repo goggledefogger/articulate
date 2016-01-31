@@ -28,7 +28,7 @@
 
 #choices #back {
   flex: 4 0 0;
-  background-color: #999966;
+  background-color: #d9b3ff;
   width: 100%;
   font-size: 32px;
   transition: opacity 2s ease-in-out;
@@ -48,7 +48,7 @@
 
 #choices #edit {
   flex: 1 0 0;
-  background-color: #899966;
+  background-color: #FF9317;
   width: 100%;
   font-size: 22px;
 }
@@ -86,6 +86,7 @@
   align-items: center;
   justify-content: center;
   border: 3px solid black;
+  user-select: none;
 }
 
 #choices .choice.editing:hover {
@@ -93,15 +94,15 @@
 }
 
 #choices #choice-1 {
-  background-color: #3399ff;
+  background-color: #0886E7;
 }
 
 #choices #choice-2 {
-  background-color: #ffcc33;
+  background-color: #FFE500;
 }
 
 #choices #choice-3 {
-  background-color: #33ff33;
+  background-color: #00E985;
 }
 
 #choices #choice-4 {
