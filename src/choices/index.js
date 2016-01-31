@@ -99,6 +99,10 @@ ChoicesView.prototype._onclick = function (evt) {
   var nextChoicesId = null
   var goingBack = false
 
+  if (this._transitioning) {
+    return
+  }
+
   if (evt.target.classList.contains('choice-1')) {
     choiceId = '1'
   } else if (evt.target.classList.contains('choice-2')) {
@@ -168,12 +172,14 @@ ChoicesView.prototype._onclick = function (evt) {
 ChoicesView.prototype._transitionToNextChoices = function (choicesId) {
   var self = this
 
+  this._transitioning = true;
   hg(this, {
     '#choices-container': {_class: {transitioning: true}},
     '.choice-text': {_class: {hidden: true}},
     '#previous-choice': {_class: {hidden: true}}
   })
   setTimeout(function () {
+    self._transitioning = false
     hg(self, {
       '#choices-container': {_class: {transitioning: false}},
       '.choice-text': {_class: {hidden: false}},

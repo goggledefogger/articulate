@@ -19,7 +19,7 @@ router({
   }
 })
 
-},{"./src/choices":19,"document-register-element":6,"fastclick":7,"uri-router":14}],2:[function(require,module,exports){
+},{"./src/choices":20,"document-register-element":6,"fastclick":7,"uri-router":15}],2:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -2229,7 +2229,9 @@ Model.prototype._onupdate = function (snapshot) {
   }
 }
 
-},{"events":2,"inherits":11,"queue":13}],13:[function(require,module,exports){
+},{"events":2,"inherits":13,"queue":14}],13:[function(require,module,exports){
+arguments[4][11][0].apply(exports,arguments)
+},{"dup":11}],14:[function(require,module,exports){
 var inherits = require('inherits');
 var EventEmitter = require('events').EventEmitter;
 
@@ -2368,7 +2370,7 @@ function done(err) {
   this.emit('end', err);
 }
 
-},{"events":2,"inherits":11}],14:[function(require,module,exports){
+},{"events":2,"inherits":13}],15:[function(require,module,exports){
 module.exports = Router
 
 Router.push = push
@@ -2631,7 +2633,7 @@ function hide (el, outlet, uri) {
   }
 }
 
-},{"./lib/hijack":15,"./lib/match-route":16,"./lib/uri":17}],15:[function(require,module,exports){
+},{"./lib/hijack":16,"./lib/match-route":17,"./lib/uri":18}],16:[function(require,module,exports){
 module.exports = hijack
 
 var matches = window.Element.prototype.matches ||
@@ -2655,7 +2657,7 @@ function hijack (ctx, selector, event, cb) {
   })
 }
 
-},{}],16:[function(require,module,exports){
+},{}],17:[function(require,module,exports){
 module.exports = function (string, routes) {
   var match = null
   var handler = null
@@ -2676,7 +2678,7 @@ module.exports = function (string, routes) {
   }
 }
 
-},{}],17:[function(require,module,exports){
+},{}],18:[function(require,module,exports){
 module.exports = URI
 
 var qs = require('querystring')
@@ -2720,9 +2722,9 @@ function URI (uri) {
   return uri
 }
 
-},{"querystring":5}],18:[function(require,module,exports){
-module.exports = "<div id=\"choices\">\n  <div id=\"left-column\">\n    <div id=\"edit\" class=\"edit button\">\n      <div class=\"edit-text edit\">EDIT</div>\n    </div>\n    <div id=\"back\" class=\"back button disabled\">\n      <div class=\"back-text back\">BACK</div>\n    </div>\n  </div>\n  <div id=\"choices-container\">\n    <div class=\"row\">\n      <div id=\"choice-1\" class=\"choice choice-1 button\">\n        <div class=\"choice-text choice-1\">Hi</div>\n      </div>\n      <div id=\"choice-2\" class=\"choice choice-2 button\">\n        <div class=\"choice-text choice-2\">Mom</div>\n      </div>\n    </div>\n      <div id=\"center-container\">\n        <div id=\"previous-choice\"></div>\n    </div>\n    <div class=\"row\">\n      <div id=\"choice-3\" class=\"choice choice-3 button\">\n        <div class=\"choice-text choice-3\">What's</div>\n      </div>\n      <div id=\"choice-4\" class=\"choice choice-4 button\">\n        <div class=\"choice-text choice-4\">Up?</div>\n      </div>\n    </div>\n  </div>\n</div>";
-},{}],19:[function(require,module,exports){
+},{"querystring":5}],19:[function(require,module,exports){
+module.exports = "<div id=\"choices\">\r\n  <div id=\"left-column\">\r\n    <div id=\"edit\" class=\"edit button\">\r\n      <div class=\"edit-text edit\">EDIT</div>\r\n    </div>\r\n    <div id=\"back\" class=\"back button disabled\">\r\n      <div class=\"back-text back\">BACK</div>\r\n    </div>\r\n  </div>\r\n  <div id=\"choices-container\">\r\n    <div class=\"row\">\r\n      <div id=\"choice-1\" class=\"choice choice-1 button\">\r\n        <div class=\"choice-text choice-1\">Hi</div>\r\n      </div>\r\n      <div id=\"choice-2\" class=\"choice choice-2 button\">\r\n        <div class=\"choice-text choice-2\">Mom</div>\r\n      </div>\r\n    </div>\r\n      <div id=\"center-container\">\r\n        <div id=\"previous-choice\"></div>\r\n    </div>\r\n    <div class=\"row\">\r\n      <div id=\"choice-3\" class=\"choice choice-3 button\">\r\n        <div class=\"choice-text choice-3\">What's</div>\r\n      </div>\r\n      <div id=\"choice-4\" class=\"choice choice-4 button\">\r\n        <div class=\"choice-text choice-4\">Up?</div>\r\n      </div>\r\n    </div>\r\n  </div>\r\n</div>";
+},{}],20:[function(require,module,exports){
 var ChoicesView = {
   prototype: Object.create(HTMLElement.prototype)
 }
@@ -2824,6 +2826,10 @@ ChoicesView.prototype._onclick = function (evt) {
   var nextChoicesId = null
   var goingBack = false
 
+  if (this._transitioning) {
+    return
+  }
+
   if (evt.target.classList.contains('choice-1')) {
     choiceId = '1'
   } else if (evt.target.classList.contains('choice-2')) {
@@ -2893,12 +2899,14 @@ ChoicesView.prototype._onclick = function (evt) {
 ChoicesView.prototype._transitionToNextChoices = function (choicesId) {
   var self = this
 
+  this._transitioning = true;
   hg(this, {
     '#choices-container': {_class: {transitioning: true}},
     '.choice-text': {_class: {hidden: true}},
     '#previous-choice': {_class: {hidden: true}}
   })
   setTimeout(function () {
+    self._transitioning = false
     hg(self, {
       '#choices-container': {_class: {transitioning: false}},
       '.choice-text': {_class: {hidden: false}},
@@ -2919,7 +2927,7 @@ ChoicesView.prototype._editChoice = function (choiceId) {
 
 module.exports = document.registerElement('x-choice', ChoicesView)
 
-},{"./index.html":18,"./model":20,"hyperglue2":9}],20:[function(require,module,exports){
+},{"./index.html":19,"./model":21,"hyperglue2":9}],21:[function(require,module,exports){
 module.exports = Choices
 
 var inherits = require('inherits')
