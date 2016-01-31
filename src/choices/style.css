@@ -94,19 +94,19 @@
 }
 
 #choices #choice-1 {
-  background-color: #0886E7;
+  background-color: rgba(8, 134, 231, 0.3);
 }
 
 #choices #choice-2 {
-  background-color: #FFE500;
+  background-color: rgba(255, 229, 0, 0.7);
 }
 
 #choices #choice-3 {
-  background-color: #00E985;
+  background-color: rgba(0, 255, 0, 0.5);
 }
 
 #choices #choice-4 {
-  background-color: #ff3333;
+  background-color: rgba(255, 51, 51, 0.5);
 }
 
 #choices .choice-text {
