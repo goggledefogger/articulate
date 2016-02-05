@@ -4,7 +4,7 @@
 
 ## Features
 
-- click/tap any of 4 choice categories to choose what you want to say
+- click/tap any of 5 choice categories to choose what you want to say
 - each choice can lead to the next level of choices in that category
 - edit or add as many choices and levels deep as you want
 - smooth lengthy transitions so extra touches won't affect the selection
