@@ -4,15 +4,23 @@ var ChoicesView = {
 
 var hg = require('hyperglue2')
 var ChoicesModel = require('./model')
+var merge = require('merge')
 
 var TIME_TO_TRANSITION = 2000
 var INITIAL_CHOICE_ID = 1
+
+var DEFAULT_CHOICE_DATA = {
+  blank: true,
+  text: '______'
+}
+var CHOICE_IDS = ['1', '2', '3', '4', '5']
 
 ChoicesView.prototype.createdCallback = function () {
   this.innerHTML = require('./index.html')
 
   this.render = this.render.bind(this)
   this._onclick = this._onclick.bind(this)
+  this._transitionToNextChoices = this._transitionToNextChoices.bind(this)
 
   this.addEventListener('click', this._onclick)
 
@@ -46,6 +54,12 @@ ChoicesView.prototype.render = function () {
 
   var previousChoice = this._history.length > 1 ? this._history[this._history.length - 2].text : null
 
+  for (var i = 0; i < CHOICE_IDS.length; i++) {
+    if (!this.model.data[CHOICE_IDS[i]]) {
+      this.model.data[CHOICE_IDS[i]] = merge({}, DEFAULT_CHOICE_DATA)
+    }
+  }
+
   hg(this, {
     '#choice-1': {
       _class: {
@@ -75,6 +89,13 @@ ChoicesView.prototype.render = function () {
       }
     },
     '#choice-4 .choice-text': {_text: this.model.data['4'].text},
+    '#choice-5': {
+      _class: {
+        button: !this.model.data['5'].blank,
+        'no-more-choices': !this.model.data['5'].next_choices
+      }
+    },
+    '#choice-5 .choice-text': {_text: this.model.data['5'].text},
     '#home': {_class: {disabled: this.model.id === '1' || this._editing}},
     '#back': {_class: {disabled: this.model.id === '1' || this._editing}},
     '#previous-choice': {_text: previousChoice},
@@ -113,6 +134,8 @@ ChoicesView.prototype._onclick = function (evt) {
     choiceId = '3'
   } else if (evt.target.classList.contains('choice-4')) {
     choiceId = '4'
+  } else if (evt.target.classList.contains('choice-5')) {
+    choiceId = '5'
   } else if (evt.target.classList.contains('home')) {
     if (this._history.length <= 1) return
 
@@ -135,7 +158,7 @@ ChoicesView.prototype._onclick = function (evt) {
   }
 
   if (choiceId) {
-    if (this.model.data[choiceId].blank && !this._editing) {
+    if (this.model.data[choiceId] && this.model.data[choiceId].blank && !this._editing) {
       return
     }
     if (this._editing) {
@@ -145,26 +168,13 @@ ChoicesView.prototype._onclick = function (evt) {
       if (nextChoicesId) {
       } else {
         var newChoices = new ChoicesModel()
-        newChoices.data['1'] = {
-          text: '______',
-          blank: true
-        }
-        newChoices.data['2'] = {
-          text: '______',
-          blank: true
-        }
-        newChoices.data['3'] = {
-          text: '______',
-          blank: true
-        }
-        newChoices.data['4'] = {
-          text: '______',
-          blank: true
+        for (var i = 0; i < CHOICE_IDS.length; i++) {
+          newChoices.data[CHOICE_IDS[i]] = merge({}, DEFAULT_CHOICE_DATA)
         }
         newChoices.update(function () {
           self.model.data[choiceId].next_choices = newChoices.id
           self.model.update(function () {
-            self._transitionToNextChoices(newChoices.id).call(self)
+            self._transitionToNextChoices(newChoices.id)
           })
         })
       }
@@ -182,7 +192,7 @@ ChoicesView.prototype._onclick = function (evt) {
 ChoicesView.prototype._transitionToNextChoices = function (choicesId) {
   var self = this
 
-  this._transitioning = true;
+  this._transitioning = true
   hg(this, {
     '#choices-container': {_class: {transitioning: true}},
     '.choice-text': {_class: {hidden: true}},
@@ -202,6 +212,7 @@ ChoicesView.prototype._transitionToNextChoices = function (choicesId) {
 ChoicesView.prototype._editChoice = function (choiceId) {
   var newChoice = window.prompt('What should the new choice be?')
   if (newChoice) {
+    this.model.data[choiceId] = this.model.data[choiceId] || {}
     this.model.data[choiceId].text = newChoice
     this.model.data[choiceId].blank = null
     this.model.update(this.render)

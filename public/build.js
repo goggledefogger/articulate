@@ -19,7 +19,7 @@ router({
   }
 })
 
-},{"./src/choices":20,"document-register-element":6,"fastclick":7,"uri-router":15}],2:[function(require,module,exports){
+},{"./src/choices":21,"document-register-element":6,"fastclick":7,"uri-router":16}],2:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -1944,6 +1944,182 @@ if (typeof Object.create === 'function') {
 }
 
 },{}],12:[function(require,module,exports){
+/*!
+ * @name JavaScript/NodeJS Merge v1.2.0
+ * @author yeikos
+ * @repository https://github.com/yeikos/js.merge
+
+ * Copyright 2014 yeikos - MIT license
+ * https://raw.github.com/yeikos/js.merge/master/LICENSE
+ */
+
+;(function(isNode) {
+
+	/**
+	 * Merge one or more objects 
+	 * @param bool? clone
+	 * @param mixed,... arguments
+	 * @return object
+	 */
+
+	var Public = function(clone) {
+
+		return merge(clone === true, false, arguments);
+
+	}, publicName = 'merge';
+
+	/**
+	 * Merge two or more objects recursively 
+	 * @param bool? clone
+	 * @param mixed,... arguments
+	 * @return object
+	 */
+
+	Public.recursive = function(clone) {
+
+		return merge(clone === true, true, arguments);
+
+	};
+
+	/**
+	 * Clone the input removing any reference
+	 * @param mixed input
+	 * @return mixed
+	 */
+
+	Public.clone = function(input) {
+
+		var output = input,
+			type = typeOf(input),
+			index, size;
+
+		if (type === 'array') {
+
+			output = [];
+			size = input.length;
+
+			for (index=0;index<size;++index)
+
+				output[index] = Public.clone(input[index]);
+
+		} else if (type === 'object') {
+
+			output = {};
+
+			for (index in input)
+
+				output[index] = Public.clone(input[index]);
+
+		}
+
+		return output;
+
+	};
+
+	/**
+	 * Merge two objects recursively
+	 * @param mixed input
+	 * @param mixed extend
+	 * @return mixed
+	 */
+
+	function merge_recursive(base, extend) {
+
+		if (typeOf(base) !== 'object')
+
+			return extend;
+
+		for (var key in extend) {
+
+			if (typeOf(base[key]) === 'object' && typeOf(extend[key]) === 'object') {
+
+				base[key] = merge_recursive(base[key], extend[key]);
+
+			} else {
+
+				base[key] = extend[key];
+
+			}
+
+		}
+
+		return base;
+
+	}
+
+	/**
+	 * Merge two or more objects
+	 * @param bool clone
+	 * @param bool recursive
+	 * @param array argv
+	 * @return object
+	 */
+
+	function merge(clone, recursive, argv) {
+
+		var result = argv[0],
+			size = argv.length;
+
+		if (clone || typeOf(result) !== 'object')
+
+			result = {};
+
+		for (var index=0;index<size;++index) {
+
+			var item = argv[index],
+
+				type = typeOf(item);
+
+			if (type !== 'object') continue;
+
+			for (var key in item) {
+
+				var sitem = clone ? Public.clone(item[key]) : item[key];
+
+				if (recursive) {
+
+					result[key] = merge_recursive(result[key], sitem);
+
+				} else {
+
+					result[key] = sitem;
+
+				}
+
+			}
+
+		}
+
+		return result;
+
+	}
+
+	/**
+	 * Get type of variable
+	 * @param mixed input
+	 * @return string
+	 *
+	 * @see http://jsperf.com/typeofvar
+	 */
+
+	function typeOf(input) {
+
+		return ({}).toString.call(input).slice(8, -1).toLowerCase();
+
+	}
+
+	if (isNode) {
+
+		module.exports = Public;
+
+	} else {
+
+		window[publicName] = Public;
+
+	}
+
+})(typeof module === 'object' && module && typeof module.exports === 'object' && module.exports);
+},{}],13:[function(require,module,exports){
 module.exports = Model
 
 var events = require('events')
@@ -2229,9 +2405,9 @@ Model.prototype._onupdate = function (snapshot) {
   }
 }
 
-},{"events":2,"inherits":13,"queue":14}],13:[function(require,module,exports){
+},{"events":2,"inherits":14,"queue":15}],14:[function(require,module,exports){
 arguments[4][11][0].apply(exports,arguments)
-},{"dup":11}],14:[function(require,module,exports){
+},{"dup":11}],15:[function(require,module,exports){
 var inherits = require('inherits');
 var EventEmitter = require('events').EventEmitter;
 
@@ -2370,7 +2546,7 @@ function done(err) {
   this.emit('end', err);
 }
 
-},{"events":2,"inherits":13}],15:[function(require,module,exports){
+},{"events":2,"inherits":14}],16:[function(require,module,exports){
 module.exports = Router
 
 Router.push = push
@@ -2633,7 +2809,7 @@ function hide (el, outlet, uri) {
   }
 }
 
-},{"./lib/hijack":16,"./lib/match-route":17,"./lib/uri":18}],16:[function(require,module,exports){
+},{"./lib/hijack":17,"./lib/match-route":18,"./lib/uri":19}],17:[function(require,module,exports){
 module.exports = hijack
 
 var matches = window.Element.prototype.matches ||
@@ -2657,7 +2833,7 @@ function hijack (ctx, selector, event, cb) {
   })
 }
 
-},{}],17:[function(require,module,exports){
+},{}],18:[function(require,module,exports){
 module.exports = function (string, routes) {
   var match = null
   var handler = null
@@ -2678,7 +2854,7 @@ module.exports = function (string, routes) {
   }
 }
 
-},{}],18:[function(require,module,exports){
+},{}],19:[function(require,module,exports){
 module.exports = URI
 
 var qs = require('querystring')
@@ -2722,24 +2898,32 @@ function URI (uri) {
   return uri
 }
 
-},{"querystring":5}],19:[function(require,module,exports){
+},{"querystring":5}],20:[function(require,module,exports){
 module.exports = "<div id=\"choices\">\r\n  <div id=\"menu\">\r\n    <div id=\"edit\" class=\"edit button\">\r\n      <div class=\"edit-text edit\">EDIT</div>\r\n    </div>\r\n    <div id=\"previous-choice\"></div>\r\n    <div id=\"home\" class=\"home button disabled\">\r\n      <div class=\"home-text home\">HOME</div>\r\n    </div>\r\n    <div id=\"back\" class=\"back button disabled\">\r\n      <div class=\"back-text back\">BACK</div>\r\n    </div>\r\n  </div>\r\n  <div id=\"choices-container\">\r\n    <div class=\"row\">\r\n      <div id=\"choice-1\" class=\"choice choice-1 button\">\r\n        <div class=\"choice-text choice-1\">Hi</div>\r\n      </div>\r\n      <div id=\"choice-2\" class=\"choice choice-2 button\">\r\n        <div class=\"choice-text choice-2\">Mom</div>\r\n      </div>\r\n    </div>\r\n    <div class=\"row center\">\r\n      <div id=\"choice-5\" class=\"choice choice-5 button\">\r\n        <div class=\"choice-text choice-5\">Articulate</div>\r\n      </div>\r\n    </div>\r\n    <div class=\"row\">\r\n      <div id=\"choice-3\" class=\"choice choice-3 button\">\r\n        <div class=\"choice-text choice-3\">What's</div>\r\n      </div>\r\n      <div id=\"choice-4\" class=\"choice choice-4 button\">\r\n        <div class=\"choice-text choice-4\">Up?</div>\r\n      </div>\r\n    </div>\r\n  </div>\r\n</div>";
-},{}],20:[function(require,module,exports){
+},{}],21:[function(require,module,exports){
 var ChoicesView = {
   prototype: Object.create(HTMLElement.prototype)
 }
 
 var hg = require('hyperglue2')
 var ChoicesModel = require('./model')
+var merge = require('merge')
 
 var TIME_TO_TRANSITION = 2000
 var INITIAL_CHOICE_ID = 1
+
+var DEFAULT_CHOICE_DATA = {
+  blank: true,
+  text: '______'
+}
+var CHOICE_IDS = ['1', '2', '3', '4', '5']
 
 ChoicesView.prototype.createdCallback = function () {
   this.innerHTML = require('./index.html')
 
   this.render = this.render.bind(this)
   this._onclick = this._onclick.bind(this)
+  this._transitionToNextChoices = this._transitionToNextChoices.bind(this)
 
   this.addEventListener('click', this._onclick)
 
@@ -2773,6 +2957,12 @@ ChoicesView.prototype.render = function () {
 
   var previousChoice = this._history.length > 1 ? this._history[this._history.length - 2].text : null
 
+  for (var i = 0; i < CHOICE_IDS.length; i++) {
+    if (!this.model.data[CHOICE_IDS[i]]) {
+      this.model.data[CHOICE_IDS[i]] = merge({}, DEFAULT_CHOICE_DATA)
+    }
+  }
+
   hg(this, {
     '#choice-1': {
       _class: {
@@ -2802,6 +2992,13 @@ ChoicesView.prototype.render = function () {
       }
     },
     '#choice-4 .choice-text': {_text: this.model.data['4'].text},
+    '#choice-5': {
+      _class: {
+        button: !this.model.data['5'].blank,
+        'no-more-choices': !this.model.data['5'].next_choices
+      }
+    },
+    '#choice-5 .choice-text': {_text: this.model.data['5'].text},
     '#home': {_class: {disabled: this.model.id === '1' || this._editing}},
     '#back': {_class: {disabled: this.model.id === '1' || this._editing}},
     '#previous-choice': {_text: previousChoice},
@@ -2840,6 +3037,8 @@ ChoicesView.prototype._onclick = function (evt) {
     choiceId = '3'
   } else if (evt.target.classList.contains('choice-4')) {
     choiceId = '4'
+  } else if (evt.target.classList.contains('choice-5')) {
+    choiceId = '5'
   } else if (evt.target.classList.contains('home')) {
     if (this._history.length <= 1) return
 
@@ -2862,7 +3061,7 @@ ChoicesView.prototype._onclick = function (evt) {
   }
 
   if (choiceId) {
-    if (this.model.data[choiceId].blank && !this._editing) {
+    if (this.model.data[choiceId] && this.model.data[choiceId].blank && !this._editing) {
       return
     }
     if (this._editing) {
@@ -2872,26 +3071,13 @@ ChoicesView.prototype._onclick = function (evt) {
       if (nextChoicesId) {
       } else {
         var newChoices = new ChoicesModel()
-        newChoices.data['1'] = {
-          text: '______',
-          blank: true
-        }
-        newChoices.data['2'] = {
-          text: '______',
-          blank: true
-        }
-        newChoices.data['3'] = {
-          text: '______',
-          blank: true
-        }
-        newChoices.data['4'] = {
-          text: '______',
-          blank: true
+        for (var i = 0; i < CHOICE_IDS.length; i++) {
+          newChoices.data[CHOICE_IDS[i]] = merge({}, DEFAULT_CHOICE_DATA)
         }
         newChoices.update(function () {
           self.model.data[choiceId].next_choices = newChoices.id
           self.model.update(function () {
-            self._transitionToNextChoices(newChoices.id).call(self)
+            self._transitionToNextChoices(newChoices.id)
           })
         })
       }
@@ -2909,7 +3095,7 @@ ChoicesView.prototype._onclick = function (evt) {
 ChoicesView.prototype._transitionToNextChoices = function (choicesId) {
   var self = this
 
-  this._transitioning = true;
+  this._transitioning = true
   hg(this, {
     '#choices-container': {_class: {transitioning: true}},
     '.choice-text': {_class: {hidden: true}},
@@ -2929,6 +3115,7 @@ ChoicesView.prototype._transitionToNextChoices = function (choicesId) {
 ChoicesView.prototype._editChoice = function (choiceId) {
   var newChoice = window.prompt('What should the new choice be?')
   if (newChoice) {
+    this.model.data[choiceId] = this.model.data[choiceId] || {}
     this.model.data[choiceId].text = newChoice
     this.model.data[choiceId].blank = null
     this.model.update(this.render)
@@ -2937,7 +3124,7 @@ ChoicesView.prototype._editChoice = function (choiceId) {
 
 module.exports = document.registerElement('x-choice', ChoicesView)
 
-},{"./index.html":19,"./model":21,"hyperglue2":9}],21:[function(require,module,exports){
+},{"./index.html":20,"./model":22,"hyperglue2":9,"merge":12}],22:[function(require,module,exports){
 module.exports = Choices
 
 var inherits = require('inherits')
@@ -2959,4 +3146,4 @@ function Choices (data) {
   RealtimeModel.call(this, storage, data)
 }
 
-},{"firebase":8,"inherits":11,"realtime-model":12}]},{},[1]);
+},{"firebase":8,"inherits":11,"realtime-model":13}]},{},[1]);

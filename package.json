@@ -28,8 +28,9 @@
     "document-register-element": "0.5.4",
     "fastclick": "1.0.6",
     "firebase": "2.4.0",
-    "hyperglue2": "^2.0.0",
+    "hyperglue2": "2.0.0",
     "inherits": "2.0.1",
+    "merge": "1.2.0",
     "realtime-model": "git://github.com/jessetane/realtime-model.git",
     "uri-router": "2.0.1"
   }
