@@ -3,26 +3,28 @@
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-  -webkit-flex-direction: row;
-      -ms-flex-direction: row;
-          flex-direction: row;
-  height: 100%;
-}
-
-#choices #left-column {
-  width: 200px;
-  height: 100%;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
   -webkit-box-orient: vertical;
   -webkit-box-direction: normal;
   -webkit-flex-direction: column;
       -ms-flex-direction: column;
           flex-direction: column;
+  height: 100%;
+  -webkit-box-flex: 0;
+  -webkit-flex: 0 0 0;
+      -ms-flex: 0 0 0;
+          flex: 0 0 0;
+}
+
+#choices #menu {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: row;
+      -ms-flex-direction: row;
+          flex-direction: row;
   -webkit-box-align: center;
   -webkit-align-items: center;
       -ms-flex-align: center;
@@ -31,10 +33,12 @@
   -webkit-justify-content: center;
       -ms-flex-pack: center;
           justify-content: center;
+  margin-top: 10px;
   margin-right: 20px;
+  margin-bottom: 40px;
 }
 
-#choices #left-column > div {
+#choices #menu > div {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -47,18 +51,19 @@
   -webkit-justify-content: center;
       -ms-flex-pack: center;
           justify-content: center;
-  margin-bottom: 80px;
+  margin-right: 40px;
+  height: 75px;
 }
 
-#choices #left-column > div:last-of-type {
-  margin-bottom: 0;
+#choices #menu > div:last-of-type {
+  margin-right: 0;
 }
 
 #choices #home {
-  -webkit-box-flex: 4;
-  -webkit-flex: 4 0 0;
-      -ms-flex: 4 0 0;
-          flex: 4 0 0;
+  -webkit-box-flex: 3;
+  -webkit-flex: 3 0 0;
+      -ms-flex: 3 0 0;
+          flex: 3 0 0;
   background-color: #CE1379;
   width: 100%;
   font-size: 32px;
@@ -67,10 +72,10 @@
 }
 
 #choices #back {
-  -webkit-box-flex: 4;
-  -webkit-flex: 4 0 0;
-      -ms-flex: 4 0 0;
-          flex: 4 0 0;
+  -webkit-box-flex: 3;
+  -webkit-flex: 3 0 0;
+      -ms-flex: 3 0 0;
+          flex: 3 0 0;
   background-color: #d9b3ff;
   width: 100%;
   font-size: 32px;
@@ -78,25 +83,15 @@
           transition: opacity 2s ease-in-out;
 }
 
-#choices #center-container {
-  height: 80px;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-align: center;
-  -webkit-align-items: center;
-      -ms-flex-align: center;
-          align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-}
-
 #choices #previous-choice {
   text-transform: uppercase;
-  font-size: 32px;
+  font-size: 24px;
+  height: 40px;
+  text-align: center;
+  padding: 10px;
+  margin-left: 20px;
+  margin-right: 20px;
+  width: 120px;
 }
 
 #choices #edit {
@@ -140,10 +135,28 @@
           flex-direction: row;
   margin-top: 10px;
   margin-bottom: 10px;
+  -webkit-box-flex: 2;
+  -webkit-flex: 2 0 0;
+      -ms-flex: 2 0 0;
+          flex: 2 0 0;
+}
+
+#choices .row.center {
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+      -ms-flex-pack: center;
+          justify-content: center;
   -webkit-box-flex: 1;
   -webkit-flex: 1 0 0;
       -ms-flex: 1 0 0;
           flex: 1 0 0;
+  z-index: 2;
+  min-height: 150px;
+  margin: 20px;
 }
 
 #choices .choice {
@@ -188,10 +201,26 @@
   background-color: rgba(255, 51, 51, 0.5);
 }
 
+#choices #choice-5 {
+  background-color: #FDAF6E;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  max-width: 400px;
+  min-height: 150px;
+}
+
 #choices .choice-text {
   font-size: 42px;
   text-align: center;
   text-transform: uppercase;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  -webkit-hyphens: auto;
+     -moz-hyphens: auto;
+      -ms-hyphens: auto;
+          hyphens: auto;
 }
 
 #choices .transitioning {
