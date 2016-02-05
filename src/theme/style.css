@@ -1,9 +1,15 @@
 body {
   font-family: 'Arial Black', 'Arial Bold', Gadget, sans-serif;
+  user-select: none;
 }
 
-.button {
+.button, .button > div {
   cursor: pointer;
+}
+
+.button.disabled, .button.disabled > div {
+  opacity: 0.4;
+  cursor: default;
 }
 
 .hidden {

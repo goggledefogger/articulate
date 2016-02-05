@@ -6,6 +6,7 @@ var hg = require('hyperglue2')
 var ChoicesModel = require('./model')
 
 var TIME_TO_TRANSITION = 2000
+var INITIAL_CHOICE_ID = 1
 
 ChoicesView.prototype.createdCallback = function () {
   this.innerHTML = require('./index.html')
@@ -26,7 +27,7 @@ ChoicesView.prototype.show = function (id) {
   }
 
   if (!id) {
-    id = 1
+    id = INITIAL_CHOICE_ID
   }
 
   this._history.push({id: id})
@@ -74,6 +75,7 @@ ChoicesView.prototype.render = function () {
       }
     },
     '#choice-4 .choice-text': {_text: this.model.data['4'].text},
+    '#home': {_class: {disabled: this.model.id === '1' || this._editing}},
     '#back': {_class: {disabled: this.model.id === '1' || this._editing}},
     '#previous-choice': {_text: previousChoice},
     '#edit': {_text: this._editing ? 'DONE' : 'EDIT'},
@@ -111,6 +113,14 @@ ChoicesView.prototype._onclick = function (evt) {
     choiceId = '3'
   } else if (evt.target.classList.contains('choice-4')) {
     choiceId = '4'
+  } else if (evt.target.classList.contains('home')) {
+    if (this._history.length <= 1) return
+
+    if (!this._editing) {
+      goingBack = true
+      this._history = []
+      nextChoicesId = INITIAL_CHOICE_ID
+    }
   } else if (evt.target.classList.contains('back')) {
     if (this._history.length <= 1) return
 

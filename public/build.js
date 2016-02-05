@@ -2723,7 +2723,7 @@ function URI (uri) {
 }
 
 },{"querystring":5}],19:[function(require,module,exports){
-module.exports = "<div id=\"choices\">\r\n  <div id=\"left-column\">\r\n    <div id=\"edit\" class=\"edit button\">\r\n      <div class=\"edit-text edit\">EDIT</div>\r\n    </div>\r\n    <div id=\"back\" class=\"back button disabled\">\r\n      <div class=\"back-text back\">BACK</div>\r\n    </div>\r\n  </div>\r\n  <div id=\"choices-container\">\r\n    <div class=\"row\">\r\n      <div id=\"choice-1\" class=\"choice choice-1 button\">\r\n        <div class=\"choice-text choice-1\">Hi</div>\r\n      </div>\r\n      <div id=\"choice-2\" class=\"choice choice-2 button\">\r\n        <div class=\"choice-text choice-2\">Mom</div>\r\n      </div>\r\n    </div>\r\n      <div id=\"center-container\">\r\n        <div id=\"previous-choice\"></div>\r\n    </div>\r\n    <div class=\"row\">\r\n      <div id=\"choice-3\" class=\"choice choice-3 button\">\r\n        <div class=\"choice-text choice-3\">What's</div>\r\n      </div>\r\n      <div id=\"choice-4\" class=\"choice choice-4 button\">\r\n        <div class=\"choice-text choice-4\">Up?</div>\r\n      </div>\r\n    </div>\r\n  </div>\r\n</div>";
+module.exports = "<div id=\"choices\">\r\n  <div id=\"left-column\">\r\n    <div id=\"edit\" class=\"edit button\">\r\n      <div class=\"edit-text edit\">EDIT</div>\r\n    </div>\r\n    <div id=\"home\" class=\"home button disabled\">\r\n      <div class=\"home-text home\">HOME</div>\r\n    </div>\r\n    <div id=\"back\" class=\"back button disabled\">\r\n      <div class=\"back-text back\">BACK</div>\r\n    </div>\r\n  </div>\r\n  <div id=\"choices-container\">\r\n    <div class=\"row\">\r\n      <div id=\"choice-1\" class=\"choice choice-1 button\">\r\n        <div class=\"choice-text choice-1\">Hi</div>\r\n      </div>\r\n      <div id=\"choice-2\" class=\"choice choice-2 button\">\r\n        <div class=\"choice-text choice-2\">Mom</div>\r\n      </div>\r\n    </div>\r\n      <div id=\"center-container\">\r\n        <div id=\"previous-choice\"></div>\r\n    </div>\r\n    <div class=\"row\">\r\n      <div id=\"choice-3\" class=\"choice choice-3 button\">\r\n        <div class=\"choice-text choice-3\">What's</div>\r\n      </div>\r\n      <div id=\"choice-4\" class=\"choice choice-4 button\">\r\n        <div class=\"choice-text choice-4\">Up?</div>\r\n      </div>\r\n    </div>\r\n  </div>\r\n</div>";
 },{}],20:[function(require,module,exports){
 var ChoicesView = {
   prototype: Object.create(HTMLElement.prototype)
@@ -2733,6 +2733,7 @@ var hg = require('hyperglue2')
 var ChoicesModel = require('./model')
 
 var TIME_TO_TRANSITION = 2000
+var INITIAL_CHOICE_ID = 1
 
 ChoicesView.prototype.createdCallback = function () {
   this.innerHTML = require('./index.html')
@@ -2753,7 +2754,7 @@ ChoicesView.prototype.show = function (id) {
   }
 
   if (!id) {
-    id = 1
+    id = INITIAL_CHOICE_ID
   }
 
   this._history.push({id: id})
@@ -2801,6 +2802,7 @@ ChoicesView.prototype.render = function () {
       }
     },
     '#choice-4 .choice-text': {_text: this.model.data['4'].text},
+    '#home': {_class: {disabled: this.model.id === '1' || this._editing}},
     '#back': {_class: {disabled: this.model.id === '1' || this._editing}},
     '#previous-choice': {_text: previousChoice},
     '#edit': {_text: this._editing ? 'DONE' : 'EDIT'},
@@ -2838,6 +2840,14 @@ ChoicesView.prototype._onclick = function (evt) {
     choiceId = '3'
   } else if (evt.target.classList.contains('choice-4')) {
     choiceId = '4'
+  } else if (evt.target.classList.contains('home')) {
+    if (this._history.length <= 1) return
+
+    if (!this._editing) {
+      goingBack = true
+      this._history = []
+      nextChoicesId = INITIAL_CHOICE_ID
+    }
   } else if (evt.target.classList.contains('back')) {
     if (this._history.length <= 1) return
 
