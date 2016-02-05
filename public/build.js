@@ -3171,8 +3171,9 @@ function Speaker (opts) {
   if ('speechSynthesis' in window) {
     this._supported = true
   }
-
-  this._setVoice(opts.voiceName)
+  if (this._supported) {
+    this._setVoice(opts.voiceName)
+  }
 }
 
 Speaker.prototype._setVoice = function (voiceName) {
