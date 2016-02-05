@@ -54,6 +54,17 @@
   margin-bottom: 0;
 }
 
+#choices #home {
+  -webkit-box-flex: 4;
+  -webkit-flex: 4 0 0;
+      -ms-flex: 4 0 0;
+          flex: 4 0 0;
+  background-color: #CE1379;
+  width: 100%;
+  font-size: 32px;
+  -webkit-transition: opacity 2s ease-in-out;
+          transition: opacity 2s ease-in-out;
+}
 
 #choices #back {
   -webkit-box-flex: 4;
@@ -96,11 +107,6 @@
   background-color: #FF9317;
   width: 100%;
   font-size: 22px;
-}
-
-#choices .disabled {
-  opacity: 0.4;
-  cursor: inherit;
 }
 
 #choices .choice.no-more-choices {
@@ -160,10 +166,6 @@
       -ms-flex-pack: center;
           justify-content: center;
   border: 3px solid black;
-  -webkit-user-select: none;
-     -moz-user-select: none;
-      -ms-user-select: none;
-          user-select: none;
 }
 
 #choices .choice.editing:hover {
@@ -208,10 +210,19 @@
 }
 body {
   font-family: 'Arial Black', 'Arial Bold', Gadget, sans-serif;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
 }
 
-.button {
+.button, .button > div {
   cursor: pointer;
+}
+
+.button.disabled, .button.disabled > div {
+  opacity: 0.4;
+  cursor: default;
 }
 
 .hidden {

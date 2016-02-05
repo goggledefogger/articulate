@@ -25,6 +25,13 @@
   margin-bottom: 0;
 }
 
+#choices #home {
+  flex: 4 0 0;
+  background-color: #CE1379;
+  width: 100%;
+  font-size: 32px;
+  transition: opacity 2s ease-in-out;
+}
 
 #choices #back {
   flex: 4 0 0;
@@ -51,11 +58,6 @@
   background-color: #FF9317;
   width: 100%;
   font-size: 22px;
-}
-
-#choices .disabled {
-  opacity: 0.4;
-  cursor: inherit;
 }
 
 #choices .choice.no-more-choices {
@@ -86,7 +88,6 @@
   align-items: center;
   justify-content: center;
   border: 3px solid black;
-  user-select: none;
 }
 
 #choices .choice.editing:hover {
