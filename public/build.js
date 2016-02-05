@@ -2908,6 +2908,7 @@ var ChoicesView = {
 var hg = require('hyperglue2')
 var ChoicesModel = require('./model')
 var merge = require('merge')
+var Speaker = require('../speak')
 
 var TIME_TO_TRANSITION = 2000
 var INITIAL_CHOICE_ID = 1
@@ -2928,6 +2929,7 @@ ChoicesView.prototype.createdCallback = function () {
   this.addEventListener('click', this._onclick)
 
   this._history = []
+  this._speaker = new Speaker()
 }
 
 ChoicesView.prototype.show = function (id) {
@@ -3075,6 +3077,8 @@ ChoicesView.prototype._onclick = function (evt) {
     if (this._editing) {
       this._editChoice(choiceId)
     } else {
+      this._speakChoice(this.model.data[choiceId].text)
+
       nextChoicesId = this.model.data[choiceId].next_choices
       if (!nextChoicesId) {
         var newChoices = new ChoicesModel()
@@ -3097,6 +3101,10 @@ ChoicesView.prototype._onclick = function (evt) {
     }
     this._transitionToNextChoices(nextChoicesId)
   }
+}
+
+ChoicesView.prototype._speakChoice = function (text) {
+  this._speaker.speak(text)
 }
 
 ChoicesView.prototype._transitionToNextChoices = function (choicesId) {
@@ -3131,7 +3139,7 @@ ChoicesView.prototype._editChoice = function (choiceId) {
 
 module.exports = document.registerElement('x-choice', ChoicesView)
 
-},{"./index.html":20,"./model":22,"hyperglue2":9,"merge":12}],22:[function(require,module,exports){
+},{"../speak":23,"./index.html":20,"./model":22,"hyperglue2":9,"merge":12}],22:[function(require,module,exports){
 module.exports = Choices
 
 var inherits = require('inherits')
@@ -3153,4 +3161,45 @@ function Choices (data) {
   RealtimeModel.call(this, storage, data)
 }
 
-},{"firebase":8,"inherits":11,"realtime-model":13}]},{},[1]);
+},{"firebase":8,"inherits":11,"realtime-model":13}],23:[function(require,module,exports){
+module.exports = Speaker
+
+var DEFAULT_VOICE_NAME = 'Google UK English Female'
+
+function Speaker (opts) {
+  opts = opts || {}
+  if ('speechSynthesis' in window) {
+    this._supported = true
+  }
+
+  this._setVoice(opts.voiceName)
+}
+
+Speaker.prototype._setVoice = function (voiceName) {
+  var self = this
+  if (!voiceName) {
+    voiceName = DEFAULT_VOICE_NAME
+  }
+
+  window.speechSynthesis.onvoiceschanged = function () {
+    var voices = window.speechSynthesis.getVoices()
+    for (var i = 0; i < voices.length; i++) {
+      if (voices[i].name === voiceName) {
+        self._voice = voices[i]
+        break
+      }
+    }
+  }
+}
+
+Speaker.prototype.speak = function (text) {
+  if (!this._supported) return
+
+  var utterance = new SpeechSynthesisUtterance(text)
+  if (this._voice) {
+    utterance.voice = this._voice
+  }
+  window.speechSynthesis.speak(utterance)
+}
+
+},{}]},{},[1]);

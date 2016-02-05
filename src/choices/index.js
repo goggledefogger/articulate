@@ -5,6 +5,7 @@ var ChoicesView = {
 var hg = require('hyperglue2')
 var ChoicesModel = require('./model')
 var merge = require('merge')
+var Speaker = require('../speak')
 
 var TIME_TO_TRANSITION = 2000
 var INITIAL_CHOICE_ID = 1
@@ -25,6 +26,7 @@ ChoicesView.prototype.createdCallback = function () {
   this.addEventListener('click', this._onclick)
 
   this._history = []
+  this._speaker = new Speaker()
 }
 
 ChoicesView.prototype.show = function (id) {
@@ -172,6 +174,8 @@ ChoicesView.prototype._onclick = function (evt) {
     if (this._editing) {
       this._editChoice(choiceId)
     } else {
+      this._speakChoice(this.model.data[choiceId].text)
+
       nextChoicesId = this.model.data[choiceId].next_choices
       if (!nextChoicesId) {
         var newChoices = new ChoicesModel()
@@ -194,6 +198,10 @@ ChoicesView.prototype._onclick = function (evt) {
     }
     this._transitionToNextChoices(nextChoicesId)
   }
+}
+
+ChoicesView.prototype._speakChoice = function (text) {
+  this._speaker.speak(text)
 }
 
 ChoicesView.prototype._transitionToNextChoices = function (choicesId) {
