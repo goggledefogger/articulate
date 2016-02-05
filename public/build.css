@@ -48,7 +48,8 @@
   -webkit-justify-content: center;
       -ms-flex-pack: center;
           justify-content: center;
-  margin-right: 40px;
+  margin-left: 20px;
+  margin-right: 20px;
   height: 75px;
 }
 
@@ -88,7 +89,7 @@
   padding: 10px;
   margin-left: 20px;
   margin-right: 20px;
-  width: 120px;
+  width: 200px;
 }
 
 #choices #edit {
