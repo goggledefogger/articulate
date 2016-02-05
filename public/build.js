@@ -3076,8 +3076,7 @@ ChoicesView.prototype._onclick = function (evt) {
       this._editChoice(choiceId)
     } else {
       nextChoicesId = this.model.data[choiceId].next_choices
-      if (nextChoicesId) {
-      } else {
+      if (!nextChoicesId) {
         var newChoices = new ChoicesModel()
         for (var i = 0; i < CHOICE_IDS.length; i++) {
           newChoices.data[CHOICE_IDS[i]] = merge({}, DEFAULT_CHOICE_DATA)
