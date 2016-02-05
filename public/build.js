@@ -3013,6 +3013,14 @@ ChoicesView.prototype.render = function () {
 }
 
 ChoicesView.prototype._toggleEditMode = function () {
+  if (!this._editing) {
+    var code = window.prompt('Secret Code:')
+    if (code !== 'peace576') {
+      window.alert('Incorrect Code')
+      return
+    }
+  }
+
   this._editing = !this._editing
   this.render()
 }
