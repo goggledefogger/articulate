@@ -205,7 +205,9 @@ ChoicesView.prototype._onclick = function (evt) {
         this._editChoice(choiceId)
       }
     } else {
-      this._speakChoice(this.model.data[choiceId].text)
+      if (!this.model.data[choiceId].mute) {
+        this._speakChoice(this.model.data[choiceId].text)
+      }
 
       nextChoicesId = this.model.data[choiceId].next_choices
       if (!nextChoicesId) {
