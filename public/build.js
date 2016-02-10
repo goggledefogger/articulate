@@ -3026,6 +3026,7 @@ ChoicesView.prototype.render = function () {
       'fa-volume-up': !this.model.data['5'].mute,
       'fa-volume-off': this.model.data['5'].mute
     }},
+    '.choice-audio': {_class: {editing: this._editing}},
     '#home': {_class: {disabled: this.model.id === '1' || this._editing}},
     '#back': {_class: {disabled: this.model.id === '1' || this._editing}},
     '#previous-choice': {_text: previousChoice},

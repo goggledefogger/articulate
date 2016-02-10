@@ -149,14 +149,11 @@
   position: absolute;
   left: 0;
   margin: 5px;
+  width: 40px;
 }
 
-#choices .choice-audio {
-  font-size: 32px;
-  position: absolute;
-  left: 0;
-  margin: 5px;
-  width: 40px;
+#choices .choice-audio.editing {
+  font-size: 64px;
 }
 
 #choices .choice-audio * {
