@@ -5,6 +5,7 @@ var ChoicesView = {
 var hg = require('hyperglue2')
 var ChoicesModel = require('./model')
 var merge = require('merge')
+var Speaker = require('../speak')
 
 var TIME_TO_TRANSITION = 2000
 var INITIAL_CHOICE_ID = 1
@@ -25,6 +26,7 @@ ChoicesView.prototype.createdCallback = function () {
   this.addEventListener('click', this._onclick)
 
   this._history = []
+  this._speaker = new Speaker()
 }
 
 ChoicesView.prototype.show = function (id) {
@@ -68,6 +70,11 @@ ChoicesView.prototype.render = function () {
       }
     },
     '#choice-1 .choice-text': {_text: this.model.data['1'].text},
+    '#choice-1 .choice-audio': {_class: {hidden: !this._editing && this.model.data['1'].mute}},
+    '#choice-1 .choice-audio > i': {_class: {
+      'fa-volume-up': !this.model.data['1'].mute,
+      'fa-volume-off': this.model.data['1'].mute
+    }},
     '#choice-2': {
       _class: {
         button: !this.model.data['2'].blank,
@@ -75,6 +82,11 @@ ChoicesView.prototype.render = function () {
       }
     },
     '#choice-2 .choice-text': {_text: this.model.data['2'].text},
+    '#choice-2 .choice-audio': {_class: {hidden: !this._editing && this.model.data['2'].mute}},
+    '#choice-2 .choice-audio > i': {_class: {
+      'fa-volume-up': !this.model.data['2'].mute,
+      'fa-volume-off': this.model.data['2'].mute
+    }},
     '#choice-3': {
       _class: {
         button: !this.model.data['3'].blank,
@@ -82,6 +94,11 @@ ChoicesView.prototype.render = function () {
       }
     },
     '#choice-3 .choice-text': {_text: this.model.data['3'].text},
+    '#choice-3 .choice-audio': {_class: {hidden: !this._editing && this.model.data['3'].mute}},
+    '#choice-3 .choice-audio > i': {_class: {
+      'fa-volume-up': !this.model.data['3'].mute,
+      'fa-volume-off': this.model.data['3'].mute
+    }},
     '#choice-4': {
       _class: {
         button: !this.model.data['4'].blank,
@@ -89,6 +106,11 @@ ChoicesView.prototype.render = function () {
       }
     },
     '#choice-4 .choice-text': {_text: this.model.data['4'].text},
+    '#choice-4 .choice-audio': {_class: {hidden: !this._editing && this.model.data['4'].mute}},
+    '#choice-4 .choice-audio > i': {_class: {
+      'fa-volume-up': !this.model.data['4'].mute,
+      'fa-volume-off': this.model.data['4'].mute
+    }},
     '#choice-5': {
       _class: {
         button: !this.model.data['5'].blank,
@@ -96,6 +118,12 @@ ChoicesView.prototype.render = function () {
       }
     },
     '#choice-5 .choice-text': {_text: this.model.data['5'].text},
+    '#choice-5 .choice-audio': {_class: {hidden: !this._editing && this.model.data['5'].mute}},
+    '#choice-5 .choice-audio > i': {_class: {
+      'fa-volume-up': !this.model.data['5'].mute,
+      'fa-volume-off': this.model.data['5'].mute
+    }},
+    '.choice-audio': {_class: {editing: this._editing}},
     '#home': {_class: {disabled: this.model.id === '1' || this._editing}},
     '#back': {_class: {disabled: this.model.id === '1' || this._editing}},
     '#previous-choice': {_text: previousChoice},
@@ -134,6 +162,7 @@ ChoicesView.prototype._onclick = function (evt) {
     return
   }
 
+  var toggleAudio = evt.target.classList.contains('choice-audio')
   if (evt.target.classList.contains('choice-1')) {
     choiceId = '1'
   } else if (evt.target.classList.contains('choice-2')) {
@@ -170,11 +199,18 @@ ChoicesView.prototype._onclick = function (evt) {
       return
     }
     if (this._editing) {
-      this._editChoice(choiceId)
-    } else {
-      nextChoicesId = this.model.data[choiceId].next_choices
-      if (nextChoicesId) {
+      if (toggleAudio) {
+        this._toggleAudio(choiceId)
       } else {
+        this._editChoice(choiceId)
+      }
+    } else {
+      if (!this.model.data[choiceId].mute) {
+        this._speakChoice(this.model.data[choiceId].text)
+      }
+
+      nextChoicesId = this.model.data[choiceId].next_choices
+      if (!nextChoicesId) {
         var newChoices = new ChoicesModel()
         for (var i = 0; i < CHOICE_IDS.length; i++) {
           newChoices.data[CHOICE_IDS[i]] = merge({}, DEFAULT_CHOICE_DATA)
@@ -195,6 +231,19 @@ ChoicesView.prototype._onclick = function (evt) {
     }
     this._transitionToNextChoices(nextChoicesId)
   }
+}
+
+ChoicesView.prototype._toggleAudio = function (choiceId) {
+  if (this.model.data[choiceId].mute) {
+    this.model.data[choiceId].mute = null
+  } else {
+    this.model.data[choiceId].mute = true
+  }
+  this.model.update(this.render)
+}
+
+ChoicesView.prototype._speakChoice = function (text) {
+  this._speaker.speak(text)
 }
 
 ChoicesView.prototype._transitionToNextChoices = function (choicesId) {

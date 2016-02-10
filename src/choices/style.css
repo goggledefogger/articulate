@@ -98,6 +98,7 @@
 }
 
 #choices .choice {
+  position: relative;
   flex: 1 0 0;
   margin-left: 40px;
   margin-right: 40px;
@@ -141,6 +142,27 @@
   overflow-wrap: break-word;
   word-break: break-word;
   hyphens: auto;
+}
+
+#choices .choice-audio {
+  font-size: 32px;
+  position: absolute;
+  left: 0;
+  margin: 5px;
+  width: 40px;
+  transition: font 1s ease-out;
+}
+
+#choices .choice-audio.editing {
+  font-size: 64px;
+}
+
+#choices .choice-audio * {
+  pointer-events: none;
+}
+
+#choices .choice-audio .hidden {
+  display: none;
 }
 
 #choices .transitioning {
