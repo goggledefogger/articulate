@@ -164,6 +164,7 @@
 }
 
 #choices .choice {
+  position: relative;
   -webkit-box-flex: 1;
   -webkit-flex: 1 0 0;
       -ms-flex: 1 0 0;
@@ -225,6 +226,29 @@
      -moz-hyphens: auto;
       -ms-hyphens: auto;
           hyphens: auto;
+}
+
+#choices .choice-audio {
+  font-size: 32px;
+  position: absolute;
+  left: 0;
+  margin: 5px;
+}
+
+#choices .choice-audio {
+  font-size: 32px;
+  position: absolute;
+  left: 0;
+  margin: 5px;
+  width: 40px;
+}
+
+#choices .choice-audio * {
+  pointer-events: none;
+}
+
+#choices .choice-audio .hidden {
+  display: none;
 }
 
 #choices .transitioning {

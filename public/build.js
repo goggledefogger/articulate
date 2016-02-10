@@ -2899,7 +2899,7 @@ function URI (uri) {
 }
 
 },{"querystring":5}],20:[function(require,module,exports){
-module.exports = "<div id=\"choices\">\r\n  <div id=\"menu\">\r\n    <div id=\"edit\" class=\"edit button\">\r\n      <div class=\"edit-text edit\">EDIT</div>\r\n    </div>\r\n    <div id=\"previous-choice\"></div>\r\n    <div id=\"home\" class=\"home button disabled\">\r\n      <div class=\"home-text home\">HOME</div>\r\n    </div>\r\n    <div id=\"back\" class=\"back button disabled\">\r\n      <div class=\"back-text back\">BACK</div>\r\n    </div>\r\n  </div>\r\n  <div id=\"choices-container\">\r\n    <div class=\"row\">\r\n      <div id=\"choice-1\" class=\"choice choice-1 button\">\r\n        <div class=\"choice-text choice-1\">Hi</div>\r\n      </div>\r\n      <div id=\"choice-2\" class=\"choice choice-2 button\">\r\n        <div class=\"choice-text choice-2\">Mom</div>\r\n      </div>\r\n    </div>\r\n    <div class=\"row center\">\r\n      <div id=\"choice-5\" class=\"choice choice-5 button\">\r\n        <div class=\"choice-text choice-5\">Articulate</div>\r\n      </div>\r\n    </div>\r\n    <div class=\"row\">\r\n      <div id=\"choice-3\" class=\"choice choice-3 button\">\r\n        <div class=\"choice-text choice-3\">What's</div>\r\n      </div>\r\n      <div id=\"choice-4\" class=\"choice choice-4 button\">\r\n        <div class=\"choice-text choice-4\">Up?</div>\r\n      </div>\r\n    </div>\r\n  </div>\r\n</div>";
+module.exports = "<div id=\"choices\">\r\n  <div id=\"menu\">\r\n    <div id=\"edit\" class=\"edit button\">\r\n      <div class=\"edit-text edit\">EDIT</div>\r\n    </div>\r\n    <div id=\"previous-choice\"></div>\r\n    <div id=\"home\" class=\"home button disabled\">\r\n      <div class=\"home-text home\">HOME</div>\r\n    </div>\r\n    <div id=\"back\" class=\"back button disabled\">\r\n      <div class=\"back-text back\">BACK</div>\r\n    </div>\r\n  </div>\r\n  <div id=\"choices-container\">\r\n    <div class=\"row\">\r\n      <div id=\"choice-1\" class=\"choice choice-1 button\">\r\n        <div class=\"choice-text choice-1\">Hi</div>\r\n        <div class=\"choice-audio choice-1 hidden\">\r\n          <i class=\"fa fa-volume-up\"></i>\r\n        </div>\r\n      </div>\r\n      <div id=\"choice-2\" class=\"choice choice-2 button\">\r\n        <div class=\"choice-text choice-2\">Mom</div>\r\n        <div class=\"choice-audio choice-2 hidden\">\r\n          <i class=\"fa fa-volume-up\"></i>\r\n        </div>\r\n      </div>\r\n    </div>\r\n    <div class=\"row center\">\r\n      <div id=\"choice-5\" class=\"choice choice-5 button\">\r\n        <div class=\"choice-text choice-5\">Articulate</div>\r\n        <div class=\"choice-audio choice-5 hidden\">\r\n          <i class=\"fa fa-volume-up\"></i>\r\n        </div>\r\n      </div>\r\n    </div>\r\n    <div class=\"row\">\r\n      <div id=\"choice-3\" class=\"choice choice-3 button\">\r\n        <div class=\"choice-text choice-3\">What's</div>\r\n        <div class=\"choice-audio choice-3 hidden\">\r\n          <i class=\"fa fa-volume-up\"></i>\r\n        </div>\r\n      </div>\r\n      <div id=\"choice-4\" class=\"choice choice-4 button\">\r\n        <div class=\"choice-text choice-4\">Up?</div>\r\n        <div class=\"choice-audio choice-4 hidden\">\r\n          <i class=\"fa fa-volume-up\"></i>\r\n        </div>\r\n      </div>\r\n    </div>\r\n  </div>\r\n</div>";
 },{}],21:[function(require,module,exports){
 var ChoicesView = {
   prototype: Object.create(HTMLElement.prototype)
@@ -2973,6 +2973,11 @@ ChoicesView.prototype.render = function () {
       }
     },
     '#choice-1 .choice-text': {_text: this.model.data['1'].text},
+    '#choice-1 .choice-audio': {_class: {hidden: !this._editing && this.model.data['1'].mute}},
+    '#choice-1 .choice-audio > i': {_class: {
+      'fa-volume-up': !this.model.data['1'].mute,
+      'fa-volume-off': this.model.data['1'].mute
+    }},
     '#choice-2': {
       _class: {
         button: !this.model.data['2'].blank,
@@ -2980,6 +2985,11 @@ ChoicesView.prototype.render = function () {
       }
     },
     '#choice-2 .choice-text': {_text: this.model.data['2'].text},
+    '#choice-2 .choice-audio': {_class: {hidden: !this._editing && this.model.data['2'].mute}},
+    '#choice-2 .choice-audio > i': {_class: {
+      'fa-volume-up': !this.model.data['2'].mute,
+      'fa-volume-off': this.model.data['2'].mute
+    }},
     '#choice-3': {
       _class: {
         button: !this.model.data['3'].blank,
@@ -2987,6 +2997,11 @@ ChoicesView.prototype.render = function () {
       }
     },
     '#choice-3 .choice-text': {_text: this.model.data['3'].text},
+    '#choice-3 .choice-audio': {_class: {hidden: !this._editing && this.model.data['3'].mute}},
+    '#choice-3 .choice-audio > i': {_class: {
+      'fa-volume-up': !this.model.data['3'].mute,
+      'fa-volume-off': this.model.data['3'].mute
+    }},
     '#choice-4': {
       _class: {
         button: !this.model.data['4'].blank,
@@ -2994,6 +3009,11 @@ ChoicesView.prototype.render = function () {
       }
     },
     '#choice-4 .choice-text': {_text: this.model.data['4'].text},
+    '#choice-4 .choice-audio': {_class: {hidden: !this._editing && this.model.data['4'].mute}},
+    '#choice-4 .choice-audio > i': {_class: {
+      'fa-volume-up': !this.model.data['4'].mute,
+      'fa-volume-off': this.model.data['4'].mute
+    }},
     '#choice-5': {
       _class: {
         button: !this.model.data['5'].blank,
@@ -3001,6 +3021,11 @@ ChoicesView.prototype.render = function () {
       }
     },
     '#choice-5 .choice-text': {_text: this.model.data['5'].text},
+    '#choice-5 .choice-audio': {_class: {hidden: !this._editing && this.model.data['5'].mute}},
+    '#choice-5 .choice-audio > i': {_class: {
+      'fa-volume-up': !this.model.data['5'].mute,
+      'fa-volume-off': this.model.data['5'].mute
+    }},
     '#home': {_class: {disabled: this.model.id === '1' || this._editing}},
     '#back': {_class: {disabled: this.model.id === '1' || this._editing}},
     '#previous-choice': {_text: previousChoice},
@@ -3039,6 +3064,7 @@ ChoicesView.prototype._onclick = function (evt) {
     return
   }
 
+  var toggleAudio = evt.target.classList.contains('choice-audio')
   if (evt.target.classList.contains('choice-1')) {
     choiceId = '1'
   } else if (evt.target.classList.contains('choice-2')) {
@@ -3075,7 +3101,11 @@ ChoicesView.prototype._onclick = function (evt) {
       return
     }
     if (this._editing) {
-      this._editChoice(choiceId)
+      if (toggleAudio) {
+        this._toggleAudio(choiceId)
+      } else {
+        this._editChoice(choiceId)
+      }
     } else {
       this._speakChoice(this.model.data[choiceId].text)
 
@@ -3101,6 +3131,15 @@ ChoicesView.prototype._onclick = function (evt) {
     }
     this._transitionToNextChoices(nextChoicesId)
   }
+}
+
+ChoicesView.prototype._toggleAudio = function (choiceId) {
+  if (this.model.data[choiceId].mute) {
+    this.model.data[choiceId].mute = null
+  } else {
+    this.model.data[choiceId].mute = true
+  }
+  this.model.update(this.render)
 }
 
 ChoicesView.prototype._speakChoice = function (text) {

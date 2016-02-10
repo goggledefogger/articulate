@@ -70,6 +70,11 @@ ChoicesView.prototype.render = function () {
       }
     },
     '#choice-1 .choice-text': {_text: this.model.data['1'].text},
+    '#choice-1 .choice-audio': {_class: {hidden: !this._editing && this.model.data['1'].mute}},
+    '#choice-1 .choice-audio > i': {_class: {
+      'fa-volume-up': !this.model.data['1'].mute,
+      'fa-volume-off': this.model.data['1'].mute
+    }},
     '#choice-2': {
       _class: {
         button: !this.model.data['2'].blank,
@@ -77,6 +82,11 @@ ChoicesView.prototype.render = function () {
       }
     },
     '#choice-2 .choice-text': {_text: this.model.data['2'].text},
+    '#choice-2 .choice-audio': {_class: {hidden: !this._editing && this.model.data['2'].mute}},
+    '#choice-2 .choice-audio > i': {_class: {
+      'fa-volume-up': !this.model.data['2'].mute,
+      'fa-volume-off': this.model.data['2'].mute
+    }},
     '#choice-3': {
       _class: {
         button: !this.model.data['3'].blank,
@@ -84,6 +94,11 @@ ChoicesView.prototype.render = function () {
       }
     },
     '#choice-3 .choice-text': {_text: this.model.data['3'].text},
+    '#choice-3 .choice-audio': {_class: {hidden: !this._editing && this.model.data['3'].mute}},
+    '#choice-3 .choice-audio > i': {_class: {
+      'fa-volume-up': !this.model.data['3'].mute,
+      'fa-volume-off': this.model.data['3'].mute
+    }},
     '#choice-4': {
       _class: {
         button: !this.model.data['4'].blank,
@@ -91,6 +106,11 @@ ChoicesView.prototype.render = function () {
       }
     },
     '#choice-4 .choice-text': {_text: this.model.data['4'].text},
+    '#choice-4 .choice-audio': {_class: {hidden: !this._editing && this.model.data['4'].mute}},
+    '#choice-4 .choice-audio > i': {_class: {
+      'fa-volume-up': !this.model.data['4'].mute,
+      'fa-volume-off': this.model.data['4'].mute
+    }},
     '#choice-5': {
       _class: {
         button: !this.model.data['5'].blank,
@@ -98,6 +118,11 @@ ChoicesView.prototype.render = function () {
       }
     },
     '#choice-5 .choice-text': {_text: this.model.data['5'].text},
+    '#choice-5 .choice-audio': {_class: {hidden: !this._editing && this.model.data['5'].mute}},
+    '#choice-5 .choice-audio > i': {_class: {
+      'fa-volume-up': !this.model.data['5'].mute,
+      'fa-volume-off': this.model.data['5'].mute
+    }},
     '#home': {_class: {disabled: this.model.id === '1' || this._editing}},
     '#back': {_class: {disabled: this.model.id === '1' || this._editing}},
     '#previous-choice': {_text: previousChoice},
@@ -136,6 +161,7 @@ ChoicesView.prototype._onclick = function (evt) {
     return
   }
 
+  var toggleAudio = evt.target.classList.contains('choice-audio')
   if (evt.target.classList.contains('choice-1')) {
     choiceId = '1'
   } else if (evt.target.classList.contains('choice-2')) {
@@ -172,7 +198,11 @@ ChoicesView.prototype._onclick = function (evt) {
       return
     }
     if (this._editing) {
-      this._editChoice(choiceId)
+      if (toggleAudio) {
+        this._toggleAudio(choiceId)
+      } else {
+        this._editChoice(choiceId)
+      }
     } else {
       this._speakChoice(this.model.data[choiceId].text)
 
@@ -198,6 +228,15 @@ ChoicesView.prototype._onclick = function (evt) {
     }
     this._transitionToNextChoices(nextChoicesId)
   }
+}
+
+ChoicesView.prototype._toggleAudio = function (choiceId) {
+  if (this.model.data[choiceId].mute) {
+    this.model.data[choiceId].mute = null
+  } else {
+    this.model.data[choiceId].mute = true
+  }
+  this.model.update(this.render)
 }
 
 ChoicesView.prototype._speakChoice = function (text) {
