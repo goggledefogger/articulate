@@ -150,6 +150,7 @@
   left: 0;
   margin: 5px;
   width: 40px;
+  transition: font 1s ease-out;
 }
 
 #choices .choice-audio.editing {
