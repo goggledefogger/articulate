@@ -1,6 +1,6 @@
 # Articulate
 
-#### A way to communicate instead of speaking
+#### Communicate by touch instead of speaking
 
 ## Features
 
